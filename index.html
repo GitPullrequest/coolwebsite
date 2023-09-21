@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tabletopguy</title>
+    <!-- Add Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Custom CSS for the terminal style */
+        body {
+            background-color: #000;
+            color: #00ff00; /* Green text */
+            font-family: "Courier New", monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            position: relative; /* To position the credit line */
+        }
+
+        #harbordiv {
+            background: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
+            border: 1px solid #00ff00; /* Green border */
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Style for the input field */
+        #inputField {
+            background-color: #000;
+            border: none;
+            color: #00ff00; /* Green text */
+            font-family: "Courier New", monospace;
+            outline: none;
+            width: 100%;
+        }
+
+        /* Style for the submit button */
+        #submitButton {
+            background-color: #00ff00; /* Green button background */
+            border: none;
+            color: #000;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        /* Matrix animation */
+        .matrix-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .matrix {
+            font-family: "Courier New", monospace;
+            color: #0F0; /* Green text */
+            position: absolute;
+            opacity: 0.6;
+            animation: drop 5s linear infinite;
+        }
+
+        @keyframes drop {
+            0% {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0.6;
+            }
+        }
+
+        /* Style for the terminal output */
+        #output {
+            background: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
+            border: 1px solid #00ff00; /* Green border */
+            padding: 10px;
+            margin-top: 20px;
+            overflow-y: scroll;
+            max-height: 200px; /* Limit the height of the output div */
+        }
+
+        /* Style for the terminal messages */
+        .terminal-message {
+            color: #00ff00; /* Green text */
+            font-family: "Courier New", monospace;
+        }
+
+        /* Credit line */
+        .credit {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            color: #00ff00; /* Green text */
+            font-family: "Courier New", monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="matrix-container">
+        <!-- JavaScript will generate the Matrix animation here -->
+    </div>
+    <div id="harbordiv">
+        <p>$ Welcome to the Matrix</p>
+        <form id="commandForm">
+            <input type="text" id="inputField" placeholder="Enter a command...">
+            <button type="submit" id="submitButton">Submit</button>
+        </form>
+        <!-- Output div for terminal messages -->
+        <div id="output"></div>
+    </div>
+    <!-- Credit line -->
+    <div class="credit">Created by tabletopguy, with help from chatgpt.</div>
+    <script>
+        // JavaScript for Matrix animation
+        const matrixContainer = document.querySelector(".matrix-container");
+
+        function createMatrixCharacter() {
+            const matrixChar = document.createElement("div");
+            matrixChar.classList.add("matrix");
+            matrixChar.textContent = Math.random() < 0.5 ? "0" : "1";
+            matrixChar.style.left = `${Math.random() * 100}%`;
+            matrixContainer.appendChild(matrixChar);
+
+            setTimeout(() => {
+                matrixChar.remove();
+            }, 5000);
+        }
+
+        setInterval(createMatrixCharacter, 150);
+
+        // JavaScript for handling commands and terminal output
+        const commandForm = document.getElementById("commandForm");
+        const inputField = document.getElementById("inputField");
+        const outputDiv = document.getElementById("output");
+
+        commandForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+            const command = inputField.value.trim();
+
+            // Sample commands and their actions
+            switch (command) {
+                case "clear":
+                    clearOutput();
+                    break;
+                case "hello":
+                    displayMessage("Hello, World!");
+                    break;
+                case "date":
+                    displayMessage(new Date().toLocaleString());
+                    break;
+                default:
+                    displayMessage("Command not recognized.");
+                    break;
+            }
+
+            inputField.value = "";
+        });
+
+        function clearOutput() {
+            outputDiv.innerHTML = "";
+        }
+
+        function displayMessage(message) {
+            const messageElement = document.createElement("p");
+            messageElement.textContent = `$ ${message}`;
+            messageElement.classList.add("terminal-message");
+            outputDiv.appendChild(messageElement);
+        }
+    </script>
+</body>
+</html>
